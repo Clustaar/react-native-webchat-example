@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "clustaar-webchat-sdk": "file:../clustaar-websocket-sdk/dist/clustaar-webchat-sdk/clustaar-webchat-sdk-0.0.3.tgz",
+    "clustaar-webchat-sdk": "1.0.0-rc1",
     "expo": "~36.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
