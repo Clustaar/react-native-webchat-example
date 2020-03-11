@@ -6,7 +6,6 @@ import { ClustaarWebChatService, WebChannel } from 'clustaar-webchat-sdk';
 import { InterlocutorReplyMessage } from 'clustaar-webchat-sdk/lib/domain/messages';
 import { GiftedChat } from 'react-native-gifted-chat'
 
-
 export default class App extends React.Component<{}, { messages: any[] }> {
 
     botID = '5b50b57f64a5470032c98636';
@@ -63,10 +62,12 @@ export default class App extends React.Component<{}, { messages: any[] }> {
     }
 
     onSend(messages = []) {
+        // Add message to chat
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }));
 
+        // Send message to the webchat api.
         const interlocutorMessage: InterlocutorReplyMessage = {
             token: this.botToken,
             params: {
@@ -90,16 +91,20 @@ export default class App extends React.Component<{}, { messages: any[] }> {
 
     join() {
 
+        // Initialize interlocutorChannel
         this.interlocutorChannel = this.clustaarWebchatSdkService.interlocutorChannel({
             botID: this.botID,
             interlocutorID: this.interlocutorID,
             socketToken: this.socketToken
         });
 
+        // Create a subjcet to be able to destroy interlocutorChannel observables on leave().
         this.interlocutorChannelSubject = new Subject();
 
+        // When we join a channel we subscribe to bot reply, agent reply, take control and interlocutor reply.
         this.interlocutorChannel.join().subscribe((status) => {
-            console.log(status);
+
+            // Subscribe to bot replies and push to chat
             this.interlocutorChannel.onBotReply().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((botReply: any) => {
                 console.log('botReply:', botReply);
                 let textsAction = botReply.fulfillment.actions.filter(action => action.type == 'send_text_action');
@@ -109,11 +114,13 @@ export default class App extends React.Component<{}, { messages: any[] }> {
                 }
             });
 
+            // Subscribe to agent replies and push to chat
             this.interlocutorChannel.onAgentReply().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((agentReply: any) => {
                 console.log(agentReply, 'agentReply');
                 this.addMessageToChat(agentReply.message, 'AGENT')
             });
 
+            // Subscribe to agent take control ( true ) / release controle ( false ) and push to chat.
             this.interlocutorChannel.onControl().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((control) => {
                 console.log(control, 'control');
                 if (control && control.value) {
@@ -124,6 +131,7 @@ export default class App extends React.Component<{}, { messages: any[] }> {
 
             });
 
+            // Subscribe to interlocutorReply, only received when you push message on another tabs / app with the same interlocutorID
             this.interlocutorChannel.onInterlocutorReply().pipe(takeUntil(this.interlocutorChannelSubject)).subscribe((interlocutorReply) => {
                 console.log(interlocutorReply, 'interlocutorReply');
                 this.addMessageToChat(interlocutorReply.message, 'USER')
