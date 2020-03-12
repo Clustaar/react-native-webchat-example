@@ -35,7 +35,13 @@ expo start
 
 ## How to configure
 
-Set the BOT_ID, USER_ID, SOCKET_TOKEN, and BOT_TOKEN on App.tsx
+Change the following attribute on constants/configuration.js :
+* ENVIRONMENT 
+* BOT_ID
+* BOT_TOKEN
+* INTERLCUTOR_ID
+* SOCKET_TOKEN
+
 
 
 

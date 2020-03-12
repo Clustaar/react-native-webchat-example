@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Dimensions } from 'react-native';
+import { Text, View, Button, TextInput, Dimensions } from 'react-native';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ClustaarWebChatService, WebChannel } from 'clustaar-webchat-sdk';
@@ -10,15 +10,13 @@ import {
     InterlocutorReplyMessage
 } from 'clustaar-webchat-sdk/lib/domain/messages';
 import { GiftedChat } from 'react-native-gifted-chat'
+import { WEBCHAT_CONFIGURATION } from './constants/configuration'
 
 export default class App extends React.Component<{}, { messages: any[] }> {
 
-    botID = '5b50b57f64a5470032c98636';
-    botToken = 'eyJ2YWx1ZSI6ImpncGVmcWh6S1BQUkJBdE1YSHRDYXFyLXJ5blFYU3B0QUZ2LVJFemoxQ00iLCJzdWJqZWN0Ijp7InR5cGUiOiJib3QiLCJpZCI6IjViNTBiNTdmNjRhNTQ3MDAzMmM5ODYzNiJ9fQ==';
-    interlocutorID = '5e398d3857d5f3000b82e4c0';
-    socketToken = 'melosockmelosockmelosockmelosockmelosockmelosockmelosockmelosockmelosockmelosock';
+
     clustaarWebchatSdkService = new ClustaarWebChatService({
-        environment: 'wss://sockets.staging.clustaar.io/socket'
+        environment: WEBCHAT_CONFIGURATION.ENVIRONMENT
     });
     interlocutorChannel: WebChannel;
     interlocutorChannelSubject: Subject<any>;
@@ -77,7 +75,7 @@ export default class App extends React.Component<{}, { messages: any[] }> {
 
         // Send message to the websocket.
         const interlocutorMessage: InterlocutorReplyMessage = {
-            token: this.botToken,
+            token: WEBCHAT_CONFIGURATION.BOT_TOKEN,
             params: {
                 display: true,
                 debug: 0
@@ -100,9 +98,9 @@ export default class App extends React.Component<{}, { messages: any[] }> {
 
         // Initialize interlocutorChannel on join(). If the user logout (leave()), and connect with another account, an another interlocutorChannel is used.
         this.interlocutorChannel = this.clustaarWebchatSdkService.interlocutorChannel({
-            botID: this.botID,
-            interlocutorID: this.interlocutorID,
-            socketToken: this.socketToken
+            botID: WEBCHAT_CONFIGURATION.BOT_ID,
+            interlocutorID: WEBCHAT_CONFIGURATION.INTERLOCUTOR_ID,
+            socketToken: WEBCHAT_CONFIGURATION.SOCKET_TOKEN
         });
 
         // Create a subject to be able to destroy interlocutorChannel observables on leave().
@@ -171,19 +169,3 @@ export default class App extends React.Component<{}, { messages: any[] }> {
 
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
-
-
-
-
-
-
-
