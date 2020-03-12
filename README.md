@@ -1,4 +1,4 @@
-#React Native Webchat example with Clustaar
+# React Native Webchat example with Clustaar
 
 Example application utilizing Clustaar Webchat SDK, showcasing common patterns. 
 
@@ -7,11 +7,11 @@ Example application utilizing Clustaar Webchat SDK, showcasing common patterns.
 * API Documentation: [docs.bots.clustaar.com/](http://docs.bots.clustaar.com/)
 * Clustaar Websocket SDK: [https://github.com/Clustaar/clustaar-websocket-sdk](https://github.com/Clustaar/clustaar-websocket-sdk)
 
-# Included
+## Included
 * Rxjs
 * React native gifted chat
 
-# Quick start
+## Quick start
 
 ```
 # Install expo
@@ -33,7 +33,7 @@ yarn
 expo start
 ```
 
-# How to configure
+## How to configure
 
 Set the BOT_ID, USER_ID, SOCKET_TOKEN, and BOT_TOKEN on App.tsx
 
