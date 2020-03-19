@@ -75,23 +75,11 @@ export default class App extends React.Component<{}, { messages: any[] }> {
 
         // Send message to the websocket.
         const interlocutorMessage: InterlocutorReplyMessage = {
-            token: WEBCHAT_CONFIGURATION.BOT_TOKEN,
-            params: {
-                display: true,
-                debug: 0
-            },
-            body: {
-                type: 'text',
-                message: messages[0].text
-            }
+            type: 'text',
+            message: messages[0].text
         };
 
-        this.interlocutorChannel.sendReply(interlocutorMessage);
-    }
-
-
-    connect() {
-
+        this.interlocutorChannel.sendReply(WEBCHAT_CONFIGURATION.BOT_TOKEN, interlocutorMessage);
     }
 
     join() {
